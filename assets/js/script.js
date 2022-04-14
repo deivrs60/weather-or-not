@@ -13,15 +13,22 @@ var dtForeCast;
 const searchButtonEl = $('#search');
 const cityInputEl = $('#city-search');
 
+// retrieve localStorage
+var retrieveHistory = function() {
+    storedHistory = JSON.parse(localStorage.getItem('citySearchHistory'));
+    if(storedHistory) {
+        searchHistory = storedHistory;
+    }
+}
+retrieveHistory();
 
 // search button functionality 
 var userCitySearch = function() {
     citySearchString = cityInputEl[0].value;
     if(citySearchString) {
-        callCityAPI(citySearchString);
+        // callCityAPI(citySearchString);
         searchHistory.push(citySearchString);
-// localStorage.setItem('citySearchHistory', 
-//  JSON.stringify(searchHistory));
+         localStorage.setItem('citySearchHistory', JSON.stringify(searchHistory));
         populateHistory();
         cityInputEl[0].value = "";
     }
@@ -30,3 +37,7 @@ var userCitySearch = function() {
     }
 }
 
+
+
+// SEARCH button click functionality
+searchButtonEl.on('click', userCitySearch)
