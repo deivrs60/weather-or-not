@@ -29,7 +29,7 @@ var userCitySearch = function() {
          callCityAPI(citySearchString);
         searchHistory.push(citySearchString);
          localStorage.setItem('citySearchHistory', JSON.stringify(searchHistory));
-     //   populateHistory();
+         populateHistory();
         cityInputEl[0].value = "";
     }
     else {
@@ -65,7 +65,7 @@ var callWeatherAPI = function(cityLat, cityLong){
         currentDate = dateObjectForecast.toLocaleDateString('en-US');
         dateFormatForecast.push(currentDate);
     }
-    // renderForecastContent(data, dateFormatForecast);
+     renderForecastContent(data, dateFormatForecast);
 
     });
 }
@@ -176,11 +176,35 @@ for(var i =1; i < 6; i++) {
 }
 }
 
+// function to populate search history under search bar
+var populateHistory = function() {
+    var searchHistoryEl = $('.search-history');
+    searchHistoryEl.empty();
+    for(var i=0; i< searchHistory.length; i++) {
+        var city = searchHistory[i];
+        const buttonEl = $('<button>')
+        .addClass('bg-secondary text-white rounded mt-1 mb-3 w-100 history-btn')
+        .text(city)
+        .attr('id', i);
+        
+        searchHistoryEl.append(buttonEl);
+
+    }
+    $('.history-btn').on('click', historyButtonClicked)
+}
+populateHistory();
 
 
-
-
+var historyButtonClicked = 
+    function(event) {
+        const id = event.target.id 
+        var city = $('.history-btn')[id].textContent
+        citySearchString = city;
+        callCityAPI(city);
+    }
 
 
 // SEARCH button click functionality
 searchButtonEl.on('click', userCitySearch);
+// search HISTORY button click functionality 
+$('.history-btn').on('click', historyButtonClicked)
