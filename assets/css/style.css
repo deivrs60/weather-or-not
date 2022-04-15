@@ -23,6 +23,31 @@ body {
 @media (max-width: 980px) {
     .forecast-day {
         width: 25%;
+        justify-content: center;
+    }
+    .current-weather {
+        width: 100%;
+        margin-bottom: 5%;
+    }
+}
+
+@media (max-width: 768px) {
+    .forecast-day {
+        width: 100%;
+        margin-bottom: 5%;
+        justify-content: center;
+    }
+    .current-weather{
+        width: 100%;
+        margin-bottom: 5%;
+    }
+}
+
+@media (max-width: 576px) {
+    .forecast-day {
+        width: 100%;
+        margin-bottom: 5%;
+        justify-content: center;
     }
     .current-weather {
         width: 100%;
