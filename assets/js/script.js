@@ -101,7 +101,7 @@ var renderCurrentWeatherContent = function(currentWeather, data) {
     h2El
         .addClass("fw-bold current-location")
         .text(citySearchString + ' ' + dateFormatCurrent)
-     //   .append(`<img src="https://openweathermap.org/img/wn/${data.current.weather[0].icon}@2px.png" width="75" height="75" />`);
+        .append(`<img src="https://openweathermap.org/img/wn/${data.current.weather[0].icon}@2px.png" width="75" height="75" />`);
         divEl.append(h2El);
 
     pEl1

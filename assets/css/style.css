@@ -1,0 +1,21 @@
+header {
+    background-image: linear-gradient(to left, rgb(300, 73, 250), rgb(195, 125, 250));
+}
+
+body {
+    background-color: paleturquoise;
+}
+.forecast-day {
+    color: white;
+    background-color: plum;
+    width: 20%;
+}
+
+.current-weather { 
+    background-color: plum;
+    color: white;
+}
+
+.uvi-good {
+    color: rgb(173, 75, 9);
+}
