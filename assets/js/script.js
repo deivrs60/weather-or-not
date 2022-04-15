@@ -100,8 +100,8 @@ var renderCurrentWeatherContent = function(currentWeather, data) {
 
     h2El
         .addClass("fw-bold current-location")
-        .text(citySearchString + '' + dateFormatCurrent)
-        .append(`<img src="https://openweathermap.org/img/wn${data.current.weather[0].icon}@2px.png" width="75" height="75" />`);
+        .text(citySearchString + ' ' + dateFormatCurrent)
+     //   .append(`<img src="https://openweathermap.org/img/wn/${data.current.weather[0].icon}@2px.png" width="75" height="75" />`);
         divEl.append(h2El);
 
     pEl1
@@ -128,9 +128,53 @@ var renderCurrentWeatherContent = function(currentWeather, data) {
 }
 
 
+// function to render forecast content onto the page
+var renderForecastContent = function(data, forecastDates) {
+    const divForecastEl = $('<div>');
+    const divForecastBlocksEl = $('<div>');
+    const h3El = $('<h3>');
 
 
 
+// start loop as 1/1st value in daily array
+for(var i =1; i < 6; i++) {
+    const h4El = $('<h4>');
+    const divForecastDayEl = $('<div>');
+    const pEl1 = $('<p>');
+    const pEl2 = $('<p>');
+    const pEl3 = $('<p>');
+    
+    let imageString;
+
+    h4El.text(forecastDates[i-1]);
+
+    imageString = `<img src="https://openweathermap.org/img/wn/${data.daily[i].weather[0].icon}@2x.png" width="75" height="75" />`
+
+    pEl1.text('Temp: ' + `${data.daily[i].temp.day}` + '\u00B0F')
+
+    pEl2.text('Wind: ' + `${data.daily[i].wind_speed}` + 'MPH')
+
+    pEl3.text('Humidity: ' + `${data.daily[i].humidity}` + '%')
+
+    divForecastDayEl 
+        .addClass('p-2 forecast-day')
+        .append(h4El, imageString, pEl1, pEl2, pEl3)
+
+    divForecastBlocksEl 
+        .addClass('d-sm-flex flex-sm-column d-md-flex flex-md-row justify-content-md-between forecast-blocks')
+        .append(divForecastDayEl)
+
+    h3El 
+        .addClass('fw-bold')
+        .text('5-Day Forecast:')
+
+    divForecastEl
+        .addClass('mt-3 forecast')
+        .append(h3El, divForecastBlocksEl)
+    
+    $('#current-weather-container').append(divForecastEl);
+}
+}
 
 
 
