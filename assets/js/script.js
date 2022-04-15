@@ -7,7 +7,7 @@ var citySearchString;
 var searchHistory =[];
 var dateFormatCurrent;
 var dateFormatForecast = [];
-var dtForeCast;
+var dtForecast;
 
 
 const searchButtonEl = $('#search');
@@ -37,35 +37,17 @@ var userCitySearch = function() {
     }
 }
 
-// function to gather city longitude and latitude to use in the openweather api
-var callCityAPI = function(city) {
-    cityAPISearch = `https://api.openweathermap.org/geo/1.0/direct?q=
-                    ${city}&limit=1&appid=a0b786fdc717dfea3eb829a24bf465f2`;
-    fetch(cityAPISearch)
-    .then(response => response.json())
-    .then(function(data) {
-        cityLat = data[0].lat;
-        cityLong = data[0].long;
-        callWeatherAPI(cityLat,cityLong);
-    })
-};
-
 
 // function to get the searched city's weather conditions based on the LAT and LONG gathered from the geocoding api
 var callWeatherAPI = function(cityLat, cityLong){
-    var currentWeatherAPICall = `https://api.openweathermap.org/data/2.5/onecall?
-                                lat=${cityLat}&
-                                lon=${cityLong}&
-                                units=${'imperial'}&
-                                exclude=${'alerts,hourly,minutely'}&
-                                appid=${'a0b786fdc717dfea3eb829a24bf465f2'}`;
+    var currentWeatherAPICall = `https://api.openweathermap.org/data/2.5/onecall?lat=${cityLat}&lon=${cityLong}&units=${'imperial'}&exclude=${'alerts,hourly,minutely'}&appid=${'a0b786fdc717dfea3eb829a24bf465f2'}`;
     fetch(currentWeatherAPICall)
     .then(response => response.json())
     .then(function(data){
         let currentWeather = {
-            'temp': data.current.temp,
-            'wind': data.current.wind_speed,
-            'humidity': data.current.humidity,
+            temp: data.current.temp,
+            wind: data.current.wind_speed,
+            humidity: data.current.humidity,
             uvi: data.current.uvi
         };
     console.log(currentWeather)
@@ -83,12 +65,67 @@ var callWeatherAPI = function(cityLat, cityLong){
         currentDate = dateObjectForecast.toLocaleDateString('en-US');
         dateFormatForecast.push(currentDate);
     }
-    renderForecastContent(data, dateFormatForecast);
+    // renderForecastContent(data, dateFormatForecast);
 
     });
 }
 
-// render the current weather conditions to content
+// function to gather city longitude and latitude to use in the openweather api
+var callCityAPI = function(city) {
+    cityAPISearch = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=a0b786fdc717dfea3eb829a24bf465f2`;
+    fetch(cityAPISearch)
+    .then(response => response.json())
+    .then(function(data) {
+        cityLat = data[0].lat;
+        cityLong = data[0].lon;
+        callWeatherAPI(cityLat, cityLong);
+    })
+};
+
+
+
+// render the current weather conditions to content!
+var renderCurrentWeatherContent = function(currentWeather, data) {
+    $('#current-weather-container').empty();
+    
+    // render current weather conditions in city searched
+    const h2El = $('<h2>');
+    const divEl = $('<div>');
+    const pEl1 = $('<p>');
+    const pEl2 = $('<p>');
+    const pEl3 = $('<p>');
+    const pEl4 = $('<p>');
+
+    divEl.addClass("current-weather mt-2 border border-dark p-2");
+
+    h2El
+        .addClass("fw-bold current-location")
+        .text(citySearchString + '' + dateFormatCurrent)
+        .append(`<img src="https://openweathermap.org/img/wn${data.current.weather[0].icon}@2px.png" width="75" height="75" />`);
+        divEl.append(h2El);
+
+    pEl1
+        .addClass("fw-bold")
+        .text('Temp:' + `${currentWeather.temp}`+ '\u00B0F')
+        divEl.append(pEl2);
+
+    pEl3
+        .addClass('fw-bold')
+        .text('UVI:' + `${currentWeather.uvi}`)
+
+    if(currentWeather.uvi <=2) {
+        pEl4.addClass('uvi-good');
+    }
+    else if(currentWeather.uvi <=5) {
+        pEl4.addClass('text-warning')
+    }
+    else {
+        pEl4.addCLass('text-danger')
+    }
+
+    divEl.append(pEl4);
+    $('#current-weather-container').prepend(divEl);
+}
 
 
 
